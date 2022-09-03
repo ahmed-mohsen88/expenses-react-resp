@@ -7,7 +7,7 @@ function ExpItems(props) {
   return (
         <tr>
           <td>{props.title}</td>
-          <td>{props.amount}</td>
+          <td>{props.amount} EGP</td>
           <td>{props.date}</td>
           <button type="button" onClick={removeHandler}>Remove</button>
         </tr>

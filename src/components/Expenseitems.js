@@ -6,6 +6,7 @@ function Expform() {
   const [etitle, settitle] = useState("");
   const [eamount, setamount] = useState("");
   const [edate, setdate] = useState("");
+  const [totalAmount, setTotalAmount] = useState(edate);
 
   const adding = (event) => {
     event.preventDefault();
@@ -20,6 +21,7 @@ function Expform() {
       return false;
     } else {
       setexp([nExp, ...exp]);
+      setTotalAmount(Number(totalAmount) + Number(eamount));
       settitle("");
       setamount("");
       setdate("");
@@ -56,19 +58,34 @@ function Expform() {
         <input type="submit" name="submit" value="ADD EXPENSE" />
       </form>
       <table border={1}>
-        <tr>
-          <th>Title</th>
-          <th>Amount</th>
-          <th>Entry Date</th>
-        </tr>
-        {exp.map((expenses) => (
-          <ExpItems
-            title={expenses.title}
-            amount={expenses.amount}
-            id={expenses.id}
-            date={expenses.date.toISOString()}
-          />
-        ))}
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Amount</th>
+            <th>Entry Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {exp.map((expenses) => (
+            <ExpItems
+              title={expenses.title}
+              amount={expenses.amount}
+              id={expenses.id}
+              date={expenses.date.toISOString()}
+            />
+          ))}
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td></td>
+            <td>
+              Total value is
+              <strong> {totalAmount} EGP</strong> 
+            </td>
+            <td></td>
+          </tr>
+        </tfoot>
       </table>
     </>
   );
