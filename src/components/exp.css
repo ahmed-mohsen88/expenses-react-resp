@@ -27,6 +27,7 @@ button {
 }
 input[type="submit"],
 button {
+
   transition: all 2s ease;
 }
 button:hover,
@@ -45,6 +46,7 @@ table {
 tr:nth-child(even) {
   background-color: #f2f2f2;
 }
+
 
 @media screen and (max-width: 1200px) {
   form {

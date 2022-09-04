@@ -6,28 +6,50 @@ function Expform() {
   const [etitle, settitle] = useState("");
   const [eamount, setamount] = useState("");
   const [edate, setdate] = useState("");
-  const [totalAmount, setTotalAmount] = useState(edate);
+  const [totalAmount, setTotalAmount] = useState("");
+
+
+  var nExp = {
+    title: etitle,
+    amount: eamount,
+    date: new Date(edate).toLocaleDateString(),
+    key: Math.floor(Math.random() * 1000),
+    id :""
+  };
+  nExp.id = nExp.title
 
   const adding = (event) => {
     event.preventDefault();
-    const nExp = {
-      title: etitle,
-      amount: eamount,
-      date: new Date(edate),
-      id: Math.floor(Math.random() * 1000),
-    };
     if (!etitle || !eamount || !edate) {
       alert("please enter valid value");
       return false;
     } else {
-      setexp([nExp, ...exp]);
-      setTotalAmount(Number(totalAmount) + Number(eamount));
+      setexp([...exp,nExp]);
+      setamount((pre) => {
+        return pre + eamount;
+      });
+      setTotalAmount(() => {
+        return Number(eamount) + Number(totalAmount);
+      });
       settitle("");
       setamount("");
       setdate("");
     }
-  };
 
+  };
+  const deletehandler = (event) => {
+    exp.forEach((el , ind)=>{
+      if (el.id == event.target.parentElement.id) {
+        console.log(`id after add ${el.id}`);
+        exp.splice( ind , 1);
+        setTotalAmount(() => {
+          return Number(totalAmount) - Number(el.amount);
+        });
+      }
+      });
+      settitle("");
+      setdate("");
+    }
   return (
     <>
       <form onSubmit={adding}>
@@ -66,29 +88,33 @@ function Expform() {
           </tr>
         </thead>
         <tbody>
-          {exp.map((expenses) => (
-            <ExpItems
-              title={expenses.title}
-              amount={expenses.amount}
-              id={expenses.id}
-              date={expenses.date.toISOString()}
-            />
-          ))}
+          {exp.map((expenses, ind) => {
+            return (
+              <ExpItems
+                title={expenses.title}
+                amount={expenses.amount}
+                date={expenses.date}
+                ondeletehandler={deletehandler}
+                id={expenses.title}
+              />
+            );
+          })}
         </tbody>
 
         <tfoot>
           <tr>
             <td></td>
             <td>
-              Total value is
-              <strong> {totalAmount} EGP</strong> 
+              <strong onChange={(e)=>{setamount(e.target.value)}}>
+          {totalAmount}
+              </strong>
             </td>
-            <td></td>
+            <td value = {totalAmount}></td>
           </tr>
         </tfoot>
       </table>
     </>
   );
-}
+        }
 
 export default Expform;
